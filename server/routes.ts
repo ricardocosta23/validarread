@@ -245,7 +245,6 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const opc2a = getColumnValue(opc2aColumnId); // Mirror column Opç2A
       const opc3a = getColumnValue(opc3aColumnId); // Mirror column Opç3A
       const opc4a = getColumnValue(opc4aColumnId); // Mirror column Opç4A
-
       const dataEntrega = getColumnValue(dataEntregaColumnId); // Mirror column Data de Entrega
 
       console.log("Extracted values:", { numeroOpcao, opc1a, opc2a, opc3a, opc4a, dataEntrega });
@@ -255,7 +254,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const opcaoNumber = parseInt(numeroOpcao || "0");
 
-            // Check if Data de Entrega is not null and not empty
+      // Check if Data de Entrega is not null and not empty
       const isDataEntregaValid = dataEntrega && dataEntrega.trim() !== "";
 
       if (opcaoNumber === 1 && opc1a && opc1a.trim() !== "" && isDataEntregaValid) {
