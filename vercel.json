@@ -18,7 +18,7 @@
   ],
   "env": {
     "NODE_ENV": "production",
-    "MONDAY_API_TOKEN": "@MONDAY_API_TOKEN"
+    "MONDAY_API_TOKEN": "MONDAY_API_TOKEN"
   },
   "installCommand": "npm install",
   "buildCommand": "npm run build"
