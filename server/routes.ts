@@ -1,6 +1,6 @@
 import type { Express } from "express";
 import { createServer, type Server } from "http";
-import { mondayWebhookPayloadSchema, type MondayWebhookPayload } from "@shared/schema";
+import { mondayWebhookPayloadSchema, type MondayWebhookPayload } from "../shared/schema.js";
 import { z } from "zod";
 
 // Monday.com API query function to get item details including mirror columns
