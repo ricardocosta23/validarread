@@ -1,6 +1,6 @@
 
 import express from "express";
-import routes from '../dist/routes.js';
+import { registerRoutes } from '../dist/routes.js';
 
 const app = express();
 app.use(express.json());
