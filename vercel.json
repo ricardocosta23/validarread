@@ -18,7 +18,7 @@
   ],
   "env": {
     "NODE_ENV": "production",
-    "MONDAY_API_TOKEN": "MONDAY_API_TOKEN"
+    "MONDAY_API_TOKEN": "eyJhbGciOiJIUzI1NiJ9.eyJ0aWQiOjQxMDM1MDMyNiwiYWFpIjoxMSwidWlkIjo1NTIyMDQ0LCJpYWQiOiIyMDI0LTA5LTEzVDExOjUyOjQzLjAwMFoiLCJwZXIiOiJtZTp3cml0ZSIsImFjdGlkIjozNzk1MywicmduIjoidXNlMSJ9.hwTlwMwtbhKdZsYcGT7UoENBLZUAxnfUXchj5RZJBz4"
   },
   "installCommand": "npm install",
   "buildCommand": "npm run build"
