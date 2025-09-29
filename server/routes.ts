@@ -196,6 +196,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
       let opc3aColumnId: string;
       let opc4aColumnId: string;
       let statusColumnId: string;
+      let dataEntregaColumnId: string;
 
       const boardIdStr = boardId.toString();
 
@@ -207,6 +208,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         opc3aColumnId = "dup__of_dup__of_op_1_mkm0aphv";
         opc4aColumnId = "lookup_mkm02qw8";
         statusColumnId = "color_mkw88tvv";
+        dataEntregaColumnId = "dup__of_avisos_____1";
       } else if (boardIdStr === "7598757472") {
         // Board 7598757472 mapping
         numeroOpcaoColumnId = "numeric_mkpn57vf";
@@ -215,6 +217,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         opc3aColumnId = "lookup_mkpn4nzc";
         opc4aColumnId = "lookup_mkpn76e9";
         statusColumnId = "color_mkw8kg7f";
+        dataEntregaColumnId = "dup__of_avisos_____1";
       } else if (boardIdStr === "7383259135") {
         // Third board mapping
         numeroOpcaoColumnId = "n_meros_1_mkm0erx8";
@@ -223,6 +226,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         opc3aColumnId = "dup__of_op_2_mkm04w4x";
         opc4aColumnId = "dup__of_op_3_mkm0y8gd";
         statusColumnId = "color_mkw8nbzn";
+        dataEntregaColumnId = "dup__of_avisos_____1";
       } else {
         console.log(`Unknown board ID: ${boardIdStr}, using default mapping`);
         // Default to original mapping for unknown boards
@@ -232,6 +236,7 @@ export async function registerRoutes(app: Express): Promise<Server> {
         opc3aColumnId = "dup__of_dup__of_op_1_mkm0aphv";
         opc4aColumnId = "lookup_mkm02qw8";
         statusColumnId = "color_mkw88tvv";
+        dataEntregaColumnId = "dup__of_avisos_____1";
       }
 
       // Get the values we need for validation
@@ -241,20 +246,25 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const opc3a = getColumnValue(opc3aColumnId); // Mirror column Opç3A
       const opc4a = getColumnValue(opc4aColumnId); // Mirror column Opç4A
 
-      console.log("Extracted values:", { numeroOpcao, opc1a, opc2a, opc3a, opc4a });
+      const dataEntrega = getColumnValue(dataEntregaColumnId); // Mirror column Data de Entrega
+
+      console.log("Extracted values:", { numeroOpcao, opc1a, opc2a, opc3a, opc4a, dataEntrega });
 
       // Validation logic based on your requirements
       let validationResult = "NÃO READEQUAR"; // Default to "NÃO READEQUAR"
 
       const opcaoNumber = parseInt(numeroOpcao || "0");
 
-      if (opcaoNumber === 1 && opc1a && opc1a.trim() !== "") {
+            // Check if Data de Entrega is not null and not empty
+      const isDataEntregaValid = dataEntrega && dataEntrega.trim() !== "";
+
+      if (opcaoNumber === 1 && opc1a && opc1a.trim() !== "" && isDataEntregaValid) {
         validationResult = "OK";
-      } else if (opcaoNumber === 2 && opc2a && opc2a.trim() !== "") {
+      } else if (opcaoNumber === 2 && opc2a && opc2a.trim() !== "" && isDataEntregaValid) {
         validationResult = "OK";
-      } else if (opcaoNumber === 3 && opc3a && opc3a.trim() !== "") {
+      } else if (opcaoNumber === 3 && opc3a && opc3a.trim() !== "" && isDataEntregaValid) {
         validationResult = "OK";
-      } else if (opcaoNumber === 4 && opc4a && opc4a.trim() !== "") {
+      } else if (opcaoNumber === 4 && opc4a && opc4a.trim() !== "" && isDataEntregaValid) {
         validationResult = "OK";
       }
 
