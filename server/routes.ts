@@ -247,6 +247,36 @@ export async function registerRoutes(app: Express): Promise<Server> {
       const opc4a = getColumnValue(opc4aColumnId); // Mirror column Opç4A
       const dataEntrega = getColumnValue(dataEntregaColumnId); // Mirror column Data de Entrega
 
+      // Debug: Log all column IDs and values for this board
+      console.log(`Board ${boardIdStr} column mappings:`, {
+        numeroOpcaoColumnId,
+        opc1aColumnId,
+        opc2aColumnId,
+        opc3aColumnId,
+        opc4aColumnId,
+        dataEntregaColumnId
+      });
+
+      // Debug: Log what we found in dataEntregaColumnId
+      const dataEntregaColumn = columnValues.find((col: any) => col.id === dataEntregaColumnId);
+      console.log(`Data de Entrega column (${dataEntregaColumnId}):`, {
+        found: !!dataEntregaColumn,
+        column: dataEntregaColumn,
+        type: dataEntregaColumn?.type,
+        text: dataEntregaColumn?.text,
+        value: dataEntregaColumn?.value,
+        display_value: dataEntregaColumn?.display_value
+      });
+
+      // Debug: List all available columns to see what we're missing
+      console.log("All available columns:", columnValues.map((col: any) => ({
+        id: col.id,
+        type: col.type,
+        text: col.text,
+        value: col.value,
+        display_value: col.display_value
+      })));
+
       console.log("Extracted values:", { numeroOpcao, opc1a, opc2a, opc3a, opc4a, dataEntrega });
 
       // Validation logic based on your requirements
@@ -254,8 +284,26 @@ export async function registerRoutes(app: Express): Promise<Server> {
 
       const opcaoNumber = parseInt(numeroOpcao || "0");
 
-      // Check if Data de Entrega is not null and not empty
-      const isDataEntregaValid = dataEntrega && dataEntrega.trim() !== "";
+      // Improved validation for Data de Entrega - handle various formats and edge cases
+      const isDataEntregaValid = (() => {
+        if (!dataEntrega) return false;
+        
+        const trimmedData = dataEntrega.trim();
+        if (trimmedData === "" || trimmedData === "-" || trimmedData === "null" || trimmedData === "undefined") {
+          return false;
+        }
+        
+        // Check if it's a valid date string (common Monday.com date formats)
+        const dateRegex = /^\d{4}-\d{2}-\d{2}|\d{2}\/\d{2}\/\d{4}|\d{2}-\d{2}-\d{4}/;
+        if (dateRegex.test(trimmedData)) {
+          return true;
+        }
+        
+        // If it contains any actual content that's not empty placeholders
+        return trimmedData.length > 0;
+      })();
+
+      console.log(`Data de Entrega validation: "${dataEntrega}" -> ${isDataEntregaValid}`);
 
       if (opcaoNumber === 1 && opc1a && opc1a.trim() !== "" && isDataEntregaValid) {
         validationResult = "OK";
